@@ -51,6 +51,35 @@ def make_data_structure(file):
   return(seq_dict)
 
 #------------------------------------------
+def output_gc_content(seq_dict):
+  #print a header for our output
+  print("gene_id\tA\tT\tG\tC")
+  #start a dictionary 
+  nucl_dict = {}
+  #loop through the keys in the sequence dictionary
+  for id in seq_dict:
+    #get the DNA sequence out of the dictionary
+    sequence = seq_dict[id]
+    #split the DNA string into a list
+    sequence_list = list(sequence)
+    #initialize the inner dictionary
+    nucl_counts = {}
+    #loop through all of the nucleotides
+    for nucl in sequence_list:
+      #if the nucleotide is already in the dictionary add one
+      if nucl in nucl_counts:
+        nucl_counts[nucl] += 1
+      #if the nucleotide isn't in the dictionary add the key and set it equal to 1
+      else:
+        nucl_counts[nucl] = 1
+        #make the outer key in the dictionary
+    nucl_dict[id] = {}
+    #Assign the inner dictionary to the key we just initialized
+    nucl_dict[id] = nucl_counts
+  #lopp through the genes in the dictionary and print out the nucleotide counts
+  for gene in nucl_dict:
+    print(gene, "\t", nucl_dict[gene]['A'],"\t", nucl_dict[gene]['T'],"\t", nucl_dict[gene]['G'],"\t", nucl_dict[gene]['C'])
+#------------------------------------------
 def rev_comp(seq_string):
   #this is the reverse compliment that we
   #wrote for a a previous problem
@@ -181,7 +210,7 @@ def match_longest_cds(longest_trans, codon_dict, trans_dict): #8
   f_nuc_longest_orf = open("Python_08.orf-longest.nt","w")
   cds_dict_to_return = {}
 
-  #lo0p through all of the longest transcripts
+  #loop through all of the longest transcripts
   for id in longest_trans:
     #if there wasn't an open reading frame that started with a Met
     #print out a dummy entry. In practice you would not print this
@@ -259,9 +288,14 @@ def make_trans_and_cds_data_structures(seq_dict):
 #This is where you find the real flow of data through the script,
 #but all of the work is done in the funtions
 
+
 #I started by calling the function make_data_structure and passing it
 #the FASTA file off of the command line. it returns a data structure
 seq_dict = make_data_structure(sys.argv[1])
+
+#for question #2 we can send the seq_dict to a function and do the 
+#nucleotide counting there
+output_gc_content(seq_dict)
 
 #I can then pass seq_dict to make_trans_and_cds_data_structures to 
 #make two more data structures that will help me get the data into 

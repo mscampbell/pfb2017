@@ -12,3 +12,4 @@ print("my favorite color is", color)
 print("my favorite activity is", activity)
 print("my favorite animal is a", animal)
 
+
